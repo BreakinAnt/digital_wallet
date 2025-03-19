@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CurrencySeeder extends Seeder
 {
@@ -32,7 +33,7 @@ class CurrencySeeder extends Seeder
         ];
 
         foreach ($currencies as $currency) {
-            \DB::table('currencies')->updateOrInsert(
+            DB::table('currencies')->updateOrInsert(
             ['code' => $currency['code']], // Match by unique code
             $currency // Insert or update with this data
             );
