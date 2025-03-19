@@ -26,7 +26,7 @@ class UserService
     public function registerUser(string $name, string $email, string $password): User
     {
         if ($this->userRepository->findByEmail($email)) {
-            throw new \Exception('Email already exists.');
+            throw new UserException('Email already exists.');
         }
 
         $data = [
@@ -43,11 +43,11 @@ class UserService
         $user = $this->userRepository->findByEmail($email);
         
         if (!$user) {
-            throw new \Exception('User not found.');
+            throw new UserException('User not found.');
         }
 
         if (!$this->validatePassword($user, $password)) {
-            throw new \Exception('Invalid password.');
+            throw new UserException('Invalid password.');
         }
 
         if (!$user->email_verified_at) {
