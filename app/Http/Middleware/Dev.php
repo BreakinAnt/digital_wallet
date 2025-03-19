@@ -15,7 +15,13 @@ class Dev
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd($request->header('X-DEV'));
+        if($request->header('X-DEV') !== env('DEV_KEY')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+        
         return $next($request);
     }
 }
