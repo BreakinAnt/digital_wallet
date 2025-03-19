@@ -60,14 +60,18 @@ class AuthController extends Controller
     {
         $data = $request->only('name', 'email', 'password');
 
-        $user = $userServ->registerUser($data['name'], $data['email'], $data['password']);
-
-        $token = $user->createToken('authToken')->plainTextToken;
+        try {
+            $user = $userServ->registerUser($data['name'], $data['email'], $data['password']);
+        } catch (UserException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 401);
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Registration successful',
-            'token' => $token,
             'user' => $user,
         ]);
     }
