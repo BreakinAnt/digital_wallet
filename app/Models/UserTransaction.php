@@ -41,7 +41,7 @@ class UserTransaction extends Model
 
     public function status()
     {
-        return $this->belongsTo(TransactionStatus::class);
+        return $this->hasMany(TransactionStatus::class);
     }
 
     public function currency()
