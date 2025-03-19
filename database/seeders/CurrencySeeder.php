@@ -12,7 +12,7 @@ class CurrencySeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('currencies')->insert([
+        $currencies = [
             ['name' => 'US Dollar', 'code' => 'USD', 'symbol' => '$'],
             ['name' => 'Euro', 'code' => 'EUR', 'symbol' => '€'],
             ['name' => 'British Pound', 'code' => 'GBP', 'symbol' => '£'],
@@ -29,6 +29,13 @@ class CurrencySeeder extends Seeder
             ['name' => 'Norwegian Krone', 'code' => 'NOK', 'symbol' => 'kr'],
             ['name' => 'South Korean Won', 'code' => 'KRW', 'symbol' => '₩'],
             ['name' => 'Brazilian Real', 'code' => 'BRL', 'symbol' => 'R$'],
-        ]);
+        ];
+
+        foreach ($currencies as $currency) {
+            \DB::table('currencies')->updateOrInsert(
+            ['code' => $currency['code']], // Match by unique code
+            $currency // Insert or update with this data
+            );
+        }
     }
 }
