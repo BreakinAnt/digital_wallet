@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Exception;
@@ -14,7 +16,7 @@ class AuthController extends Controller
     /**
      * Handle user login.
      */
-    public function login(Request $request, UserService $userServ)
+    public function login(UserLoginRequest $request, UserService $userServ)
     {
         $credentials = $request->only('email', 'password');
 
@@ -54,13 +56,9 @@ class AuthController extends Controller
     /**
      * Handle user registration.
      */
-    public function register(Request $request, UserService $userServ)
+    public function register(UserRegisterRequest $request, UserService $userServ)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        $data = $request->only('name', 'email', 'password');
 
         $user = $userServ->registerUser($data['name'], $data['email'], $data['password']);
 
@@ -77,7 +75,7 @@ class AuthController extends Controller
     /**
      * Handle user logout.
      */
-    public function logout(Request $request, UserService $userServ)
+    public function logout()
     {
         Auth::logout();
 
@@ -90,7 +88,7 @@ class AuthController extends Controller
     /**
      * Get authenticated user details.
      */
-    public function user(Request $request)
+    public function user()
     {
         return response()->json([
             'success' => true,
