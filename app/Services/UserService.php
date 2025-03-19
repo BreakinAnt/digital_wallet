@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserException;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,10 +33,10 @@ class UserService
         return $this->userRepository->create($data);
     }
 
-    public function loginUser(string $email, string $password): User
+    public function validateUser(string $email, string $password): User
     {
         $user = $this->userRepository->findByEmail($email);
-
+        
         if (!$user) {
             throw new \Exception('User not found.');
         }
@@ -43,7 +45,9 @@ class UserService
             throw new \Exception('Invalid password.');
         }
 
-        Auth::login($user);
+        if (!$user->email_verified_at) {
+            throw new UserException('Email not verified.');
+        }
 
         return $user;
     }
