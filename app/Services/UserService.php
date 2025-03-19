@@ -18,6 +18,11 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
+    public function getUser(string $email): User
+    {
+        return $this->userRepository->findByEmail($email);
+    }
+
     public function registerUser(string $name, string $email, string $password): User
     {
         if ($this->userRepository->findByEmail($email)) {
@@ -57,7 +62,7 @@ class UserService
         return Hash::check($password, $user->password);
     }
 
-    public function verifyEmail(User $user): User
+    public function markEmailAsVerified(User $user): User
     {
         if($user->email_verified_at) {
             return $user;
