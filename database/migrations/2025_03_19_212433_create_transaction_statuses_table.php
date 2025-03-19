@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transaction_statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->references('user_transactions');
+            $table->foreignId('transaction_id')->references('id')->on('user_transactions');
             $table->enum('name', ['pending', 'completed', 'cancelled']);
             $table->softDeletes();
             $table->index(['name']);

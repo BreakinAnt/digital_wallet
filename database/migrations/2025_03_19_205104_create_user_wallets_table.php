@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('currency_id')->references('currencies');
+            $table->foreignId('currency_id')->references('id')->on('currencies');
             $table->integer('balance')->default(0);
             $table->boolean('active')->default(1);
             $table->string('type', 20)->default('personal');
