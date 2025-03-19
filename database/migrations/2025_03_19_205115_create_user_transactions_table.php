@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->references('users');
             $table->foreignId('wallet_id')->references('user_wallets');
             $table->foreignId('target_walled_id')->references('user_wallets')->nullable();
+            $table->foreignId('status_id')->references('transaction_statuses');
             $table->foreignId('currency_id')->references('currencies');
             $table->integer('amount');
             $table->string('type', 20)->default('deposit');
-            $table->string('status', 20)->default('pending');
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('cancelled_at')->nullable();
             $table->softDeletes();
