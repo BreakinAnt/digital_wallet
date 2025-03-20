@@ -23,6 +23,18 @@ class TransactionController
     }
 
     /**
+     * View a specific transaction.
+     */
+    public function viewTransaction($transactionId)
+    {
+        $transaction = $this->walletServ->getTransaction($transactionId);
+
+        return response()->json([
+            'transaction' => new TransactionResource($transaction),
+        ]);
+    }
+
+    /**
      * Handle transaction creation.
      */
     public function sendTransaction(SendTransactionRequest $request)
