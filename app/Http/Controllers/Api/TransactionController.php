@@ -45,8 +45,6 @@ class TransactionController
             $data['amount'], 
             isset($data['type'])
         );
-        
-        $this->walletServ->completeTransaction($transaction);
 
         return response()->json([
             'message' => 'Transaction created successfully',
