@@ -69,7 +69,7 @@ class TransactionTest extends TestCase
             'balance' => 1000,
         ]);
 
-        $transaction = $walletServ->sendTransaction($userA, $userB, $transferAmount, 'transfer');
+        $transaction = $walletServ->sendTransfer($userA, $userB, $transferAmount);
 
         
         $transaction = $walletServ->completeTransaction($transaction);
@@ -96,7 +96,7 @@ class TransactionTest extends TestCase
             'balance' => 1000,
         ]);
 
-        $transaction = $walletServ->sendTransaction($userA, $userB, $transferAmount, 'transfer');
+        $transaction = $walletServ->sendTransfer($userA, $userB, $transferAmount);
 
         
         $transaction = $walletServ->cancelTransaction($transaction);
@@ -122,7 +122,7 @@ class TransactionTest extends TestCase
             'balance' => 1000,
         ]);
 
-        $transaction = $walletServ->sendTransaction($userA, $userB, $transferAmount, 'transfer');
+        $transaction = $walletServ->sendTransfer($userA, $userB, $transferAmount);
 
         $walletServ->completeTransaction($transaction);
         
