@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Exceptions\UserException;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
