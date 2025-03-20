@@ -30,6 +30,14 @@ Route::get('/confirm-transaction/{transaction_id}', function ($transactionId, Wa
     return response()->json(['message' => 'Transaction completed'], 200);
 });
 
+Route::get('/confirm-refund/{transaction_id}', function ($transactionId, WalletService $walletServ) {
+    $transaction = $walletServ->getTransaction($transactionId);
+
+    $walletServ->completeRefund($transaction);
+
+    return response()->json(['message' => 'Transaction refunded'], 200);
+});
+
 Route::get('/set-funds/{email}', function (Request $request, $email, WalletService $walletServ) {
     $user = User::where('email', $email)->first();
 
