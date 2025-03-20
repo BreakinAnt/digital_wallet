@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Currency;
 use App\Models\User;
 use App\Models\UserTransaction;
+use App\Resources\TransactionResource;
 use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,7 @@ class TransactionController
 
         return response()->json([
             'message' => 'Transaction created successfully',
-            'transaction' => $transaction,
+            'transaction' => new TransactionResource($transaction),
         ]);
     }
 }

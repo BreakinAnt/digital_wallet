@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Repositories\UserRepository;
+use App\Resources\UserResource;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Login successful',
                 'token' => $token,
-                'user' => $user,
+                'user' => new UserResource($user),
             ]);
         }
 
@@ -72,7 +73,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Registration successful',
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 
