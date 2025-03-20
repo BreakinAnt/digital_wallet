@@ -114,7 +114,7 @@ class WalletService
     public function sendRefund(UserTransaction $transaction): UserTransaction
     {
         if($transaction->completed_at === null) {
-            throw new UserException('Cannot refund an incomplete transaction');
+            $this->cancelTransaction($transaction);
         }
 
         if ($transaction->cancelled_at !== null) {
