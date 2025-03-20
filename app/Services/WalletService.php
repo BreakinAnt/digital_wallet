@@ -2,22 +2,26 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionStatusEnum;
 use App\Exceptions\UserException;
 use App\Models\Currency;
+use App\Models\TransactionStatus;
 use App\Models\User;
 use App\Models\UserTransaction;
 use App\Models\UserWallet;
+use App\Repositories\TransactionStatusRepository;
 use App\Repositories\UserTransactionRepository;
 use App\Repositories\UserWalletRepository;
 
 class WalletService
 {
-    protected $userWalletRep, $userTransactionRep;
+    protected $userWalletRep, $userTransactionRep, $transactionStatusRep;
 
     public function __construct()
     {
         $this->userWalletRep = new UserWalletRepository();
         $this->userTransactionRep = new UserTransactionRepository();
+        $this->transactionStatusRep = new TransactionStatusRepository();
     }
 
     public function getWallet(User $user): UserWallet
@@ -46,7 +50,11 @@ class WalletService
             throw new UserException('Insufficient balance to complete the transaction');
         }
         
-        return $this->userTransactionRep->create($user, $targetUser, $currency, $amount, $type);
+        $transaction = $this->userTransactionRep->create($user, $targetUser, $currency, $amount, $type);
+
+        $this->transactionStatusRep->create($transaction, TransactionStatusEnum::PENDING);
+  
+        return $transaction;
     }
 
     public function completeTransaction(UserTransaction $transaction): UserWallet
@@ -54,6 +62,8 @@ class WalletService
         $wallet = $this->getWallet($transaction->user);
 
         $targetWallet = $this->getWallet($transaction->targetUser);
+
+        $this->transactionStatusRep->create($transaction, TransactionStatusEnum::COMPLETED);
 
         $transaction->update(['completed_at' => now()]);
 
