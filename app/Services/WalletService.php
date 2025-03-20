@@ -12,6 +12,8 @@ use App\Models\UserWallet;
 use App\Repositories\TransactionStatusRepository;
 use App\Repositories\UserTransactionRepository;
 use App\Repositories\UserWalletRepository;
+use Exception;
+use Illuminate\Support\Facades\Http;
 
 class WalletService
 {
@@ -71,12 +73,19 @@ class WalletService
 
         $targetWallet = $this->getWallet($transaction->targetUser);
 
+        try {
+            $transaction = $this->exchangeRate($transaction);
+        } catch (Exception $e) {
+            report($e);
+            throw new Exception('An unexpected error occurred. Please try again later.');
+        }
+
         $this->transactionStatusRep->create($transaction, TransactionStatusEnum::COMPLETED);
 
         $transaction->update(['completed_at' => now()]);
 
         $this->userWalletRep->update($wallet, -$transaction->amount);
-        $this->userWalletRep->update($targetWallet, $transaction->amount);
+        $this->userWalletRep->update($targetWallet, $transaction->total_amount);
 
         return $wallet;
     }
@@ -107,8 +116,35 @@ class WalletService
         $transaction->update(['cancelled_at' => now()]);
 
         $this->userWalletRep->update($wallet, $transaction->amount);
-        $this->userWalletRep->update($targetWallet, -$transaction->amount);
+        $this->userWalletRep->update($targetWallet, -$transaction->total_amount ?? $transaction->amount);
 
         return $wallet;
+    }
+
+    public function exchangeRate(UserTransaction $transaction): UserTransaction
+    {
+        $currency = $transaction->user->wallet->currency;
+        $targetCurrency = $transaction->targetUser->wallet->currency;
+
+        if($currency->code === $targetCurrency->code) {
+            $transaction->update(['total_amount' => $transaction->amount]);
+
+            return $transaction;
+        }
+
+        try {
+            $response = Http::get("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/".strtolower($currency->code).".json");
+        } catch (Exception $e) {
+            $response = Http::get("https://latest.currency-api.pages.dev/v1/currencies/".strtolower($currency->code).".json");
+        }
+
+
+        $targetCurrencyRate = $response->json()[strtolower($currency->code)][strtolower($targetCurrency->code)];
+
+        $totalAmount = round(($transaction->amount/100) * $targetCurrencyRate)*100;
+  
+        $transaction->update(['total_amount' => $totalAmount]);
+
+        return $transaction;
     }
 }
