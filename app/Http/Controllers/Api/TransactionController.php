@@ -69,4 +69,35 @@ class TransactionController
             'transaction' => new TransactionResource($transaction),
         ]);
     }
+
+    /**
+     * Handle transaction refund.
+     */
+    public function refundTransaction($transactionId)
+    {
+        try {
+            $transaction = $this->walletServ->getTransaction($transactionId);
+
+            if ($transaction->user_id !== $this->user->id) {
+                return response()->json([
+                    'message' => 'You are not authorized to refund this transaction.',
+                ], 403);
+            }
+
+            $this->walletServ->sendRefund($transaction);
+
+            return response()->json([
+                'message' => 'Transaction refunded successfully',
+            ]);
+        } catch (UserException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 400);
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json([
+                'message' => 'An unexpected error occurred. Please try again later.',
+            ], 500);
+        }
+    }
 }

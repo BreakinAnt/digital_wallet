@@ -13,5 +13,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
 
     Route::get('/transaction/{transaction_id}', [TransactionController::class, 'viewTransaction']);
+    Route::patch('/transaction/{transaction_id}/refund', [TransactionController::class, 'refundTransaction']);
     Route::post('/transaction', [TransactionController::class, 'sendTransaction']);
 });
