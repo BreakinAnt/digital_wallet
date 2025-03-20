@@ -10,6 +10,8 @@ class UserWallet extends Model
 {
     use SoftDeletes, HasFactory;
 
+    protected $with = ['currency'];
+
     protected $fillable = [
         'user_id',
         'currency_id',

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTransaction extends Model
 {
+    protected $with = ['statuses', 'user', 'targetUser', 'currency'];
+
     protected $fillable = [
         'user_id',
         'target_user_id',
