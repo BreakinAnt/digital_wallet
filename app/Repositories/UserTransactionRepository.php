@@ -12,7 +12,7 @@ class UserTransactionRepository
 {
     public function getCurrentStatus(UserTransaction $transaction): TransactionStatus
     {
-        return $transaction->statuses()->latest('created_at')->first() ?? new TransactionStatus();
+        return $transaction->statuses()->orderBy('id', 'DESC')->first() ?? new TransactionStatus();
     }
 
     public function getById(int $id): UserTransaction
