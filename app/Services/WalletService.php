@@ -74,7 +74,7 @@ class WalletService
         $targetWallet = $this->getWallet($transaction->targetUser);
 
         try {
-            $transaction = $this->exchangeRate($transaction);
+            $transaction = $this->exchangeRate($transaction->fresh());
         } catch (Exception $e) {
             report($e);
             throw new Exception('An unexpected error occurred. Please try again later.');
