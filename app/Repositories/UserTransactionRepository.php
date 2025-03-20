@@ -3,12 +3,18 @@
 namespace App\Repositories;
 
 use App\Models\Currency;
+use App\Models\TransactionStatus;
 use App\Models\User;
 use App\Models\UserTransaction;
 use App\Models\UserWallet;
 
 class UserTransactionRepository
 {
+    public function getCurrentStatus(UserTransaction $transaction): TransactionStatus
+    {
+        return $transaction->statuses()->latest('created_at')->first() ?? new TransactionStatus();
+    }
+
     public function getById(int $id): UserTransaction
     {
         return UserTransaction::findOrFail($id);

@@ -32,9 +32,9 @@ class UserTransaction extends Model
         return $this->belongsTo(User::class, 'target_user_id');
     }
 
-    public function status()
+    public function statuses()
     {
-        return $this->hasMany(TransactionStatus::class);
+        return $this->hasMany(TransactionStatus::class, 'transaction_id');
     }
 
     public function currency()
