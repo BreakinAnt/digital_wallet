@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\TransactionTypeEnum;
 use App\Models\Currency;
 use App\Models\TransactionStatus;
 use App\Models\User;
@@ -20,7 +21,7 @@ class UserTransactionRepository
         return UserTransaction::findOrFail($id);
     }
 
-    public function create(User $user, User $targetUser, Currency $currency, int $amount, string $type = 'deposit'): UserTransaction
+    public function create(User $user, User $targetUser, Currency $currency, int $amount, TransactionTypeEnum $type = TransactionTypeEnum::DEPOSIT): UserTransaction
     {
         return UserTransaction::create([
             'user_id' => $user->id,
