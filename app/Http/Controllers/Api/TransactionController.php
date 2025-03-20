@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\TransactionTypeEnum;
 use App\Exceptions\UserException;
 use App\Http\Requests\SendTransactionRequest;
 use App\Models\Currency;
@@ -44,12 +45,26 @@ class TransactionController
         $targetUser = User::where('email', $data['recipient'])->first();
 
         try {
-            $transaction = $this->walletServ->sendTransaction(
-                $this->user, 
-                $targetUser, 
-                $data['amount'], 
-                isset($data['type'])
-            );
+            switch($data['type']) {
+                case TransactionTypeEnum::DEPOSIT:
+                    // $transaction = $this->walletServ->sendDeposit(
+                    //     $this->user, 
+                    //     $data['amount']
+                    // );
+                    // break;
+                case TransactionTypeEnum::WITHDRAW:
+                    // $transaction = $this->walletServ->sendWithdraw(
+                    //     $this->user, 
+                    //     $data['amount']
+                    // );
+                    // break;
+                case TransactionTypeEnum::TRANSFER:
+                    $transaction = $this->walletServ->sendTransfer(
+                        $this->user, 
+                        $targetUser, 
+                        $data['amount']
+                    );
+            }
         } catch (UserException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
