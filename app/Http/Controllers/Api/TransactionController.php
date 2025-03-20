@@ -86,9 +86,6 @@ class TransactionController
 
             $this->walletServ->sendRefund($transaction);
 
-            return response()->json([
-                'message' => 'Transaction refunded successfully',
-            ]);
         } catch (UserException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
@@ -99,5 +96,9 @@ class TransactionController
                 'message' => 'An unexpected error occurred. Please try again later.',
             ], 500);
         }
+
+        return response()->json([
+            'message' => 'Transaction refund requested successfully',
+        ]);
     }
 }
