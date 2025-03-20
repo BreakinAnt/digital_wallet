@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('target_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('currency_id')->references('id')->on('currencies');
             $table->integer('amount');
+            $table->integer('total_amount')->nullable();
             $table->string('type', 20)->default('deposit');
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('cancelled_at')->nullable();

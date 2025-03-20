@@ -13,7 +13,6 @@ class SendTransactionRequest extends FormRequest
     {
         return [
             'amount'            => ['required', 'integer'],
-            'currency_id'       => ['required', 'exists:currencies,id'],
             'recipient'         => ['required', 'email', 'exists:users,email'],
             'type'              => ['optional', 'string'],
         ];

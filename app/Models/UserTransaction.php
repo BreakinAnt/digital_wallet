@@ -11,6 +11,7 @@ class UserTransaction extends Model
         'target_user_id',
         'currency_id',
         'amount',
+        'total_amount',
         'type',
         'completed_at',
         'cancelled_at',
