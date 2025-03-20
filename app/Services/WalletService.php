@@ -40,7 +40,7 @@ class WalletService
         return $transaction;
     }
 
-    public function sendTransaction(User $user, User $targetUser, int $amount, string $type = 'deposit'): UserTransaction
+    public function sendTransaction(User $user, User $targetUser, int $amount): UserTransaction
     {
         if ($user === $targetUser) {
             throw new UserException('You cannot send a transaction to yourself');
@@ -52,7 +52,7 @@ class WalletService
             throw new UserException('Insufficient balance to complete the transaction');
         }
         
-        $transaction = $this->userTransactionRep->create($user, $targetUser, $user->wallet->currency, $amount, $type);
+        $transaction = $this->userTransactionRep->create($user, $targetUser, $user->wallet->currency, $amount, 'transfer');
 
         $this->transactionStatusRep->create($transaction, TransactionStatusEnum::PENDING);
   
