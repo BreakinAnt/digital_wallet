@@ -9,6 +9,11 @@ use App\Models\UserWallet;
 
 class UserTransactionRepository
 {
+    public function getById(int $id): UserTransaction
+    {
+        return UserTransaction::findOrFail($id);
+    }
+
     public function create(User $user, User $targetUser, Currency $currency, int $amount, string $type = 'deposit'): UserTransaction
     {
         return UserTransaction::create([

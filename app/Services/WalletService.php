@@ -27,6 +27,13 @@ class WalletService
         return $wallet;
     }
 
+    public function getTransaction(int $transaction): UserTransaction
+    {
+        $transaction = $this->userTransactionRep->getById($transaction);
+
+        return $transaction;
+    }
+
     public function sendTransaction(User $user, User $targetUser, Currency $currency, int $amount, string $type = 'deposit'): UserTransaction
     {
         if ($user === $targetUser) {
