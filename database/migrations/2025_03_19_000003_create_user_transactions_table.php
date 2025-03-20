@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('wallet_id')->references('id')->on('user_wallets');
-            $table->foreignId('target_walled_id')->references('id')->on('user_wallets');
+            $table->foreignId('target_wallet_id')->references('id')->on('user_wallets');
             $table->foreignId('currency_id')->references('id')->on('currencies');
             $table->integer('amount');
             $table->string('type', 20)->default('deposit');
