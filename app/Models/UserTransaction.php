@@ -8,9 +8,7 @@ class UserTransaction extends Model
 {
     protected $fillable = [
         'user_id',
-        'wallet_id',
-        'target_wallet_id',
-        'status_id',
+        'target_user_id',
         'currency_id',
         'amount',
         'type',
