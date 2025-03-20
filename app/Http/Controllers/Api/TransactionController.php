@@ -43,13 +43,10 @@ class TransactionController
 
         $targetUser = User::where('email', $data['recipient'])->first();
 
-        $currency = $this->user->wallet->currency;
-
         try {
             $transaction = $this->walletServ->sendTransaction(
                 $this->user, 
                 $targetUser, 
-                $currency, 
                 $data['amount'], 
                 isset($data['type'])
             );
