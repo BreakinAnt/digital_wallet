@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TransactionTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SendTransactionRequest extends FormRequest
@@ -11,10 +12,11 @@ class SendTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $types = implode(',', TransactionTypeEnum::toArray());
         return [
             'amount'            => ['required', 'integer'],
             'recipient'         => ['required', 'email', 'exists:users,email'],
-            'type'              => ['optional', 'string'],
+            'type'              => ['optional', 'string', "in:$types"],
         ];
     }
 }
