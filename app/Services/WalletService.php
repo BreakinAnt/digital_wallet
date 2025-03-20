@@ -59,7 +59,7 @@ class WalletService
         return $transaction;
     }
 
-    public function completeTransaction(UserTransaction $transaction): UserWallet
+    public function completeTransaction(UserTransaction $transaction): UserTransaction
     {
         if($transaction->completed_at !== null) {
             throw new UserException('Transaction has already been completed');
@@ -87,10 +87,10 @@ class WalletService
         $this->userWalletRep->update($wallet, -$transaction->amount);
         $this->userWalletRep->update($targetWallet, $transaction->total_amount);
 
-        return $wallet;
+        return $transaction;
     }
 
-    public function cancelTransaction(UserTransaction $transaction): UserWallet
+    public function cancelTransaction(UserTransaction $transaction): UserTransaction
     {
         if($transaction->cancelled_at !== null) {
             throw new UserException('Transaction has already been cancelled');
@@ -100,15 +100,11 @@ class WalletService
             throw new UserException('Cannot cancel a completed transaction');
         }
 
-        $wallet = $this->getWallet($transaction->user);
-
         $this->transactionStatusRep->create($transaction, TransactionStatusEnum::CANCELLED);
 
         $transaction->update(['cancelled_at' => now()]);
 
-        $this->userWalletRep->update($wallet, $transaction->amount);
-
-        return $wallet;
+        return $transaction;
     }
 
     public function sendRefund(UserTransaction $transaction): UserTransaction
