@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\UserException;
+use App\Http\Requests\SendTransactionRequest;
 use App\Models\Currency;
 use App\Models\User;
 use App\Models\UserTransaction;
@@ -23,28 +25,32 @@ class TransactionController
     /**
      * Handle transaction creation.
      */
-    public function sendTransaction(Request $request)
+    public function sendTransaction(SendTransactionRequest $request)
     {
-        $request->validate([
-            'amount'            => ['required', 'integer'],
-            'currency_id'       => ['required', 'exists:currencies,id'],
-            'recipient'         => ['required', 'email', 'exists:users,email'],
-            'type'              => ['optional', 'string'],
-        ]);
-
         $data = $request->only(['amount', 'currency_id', 'recipient', 'type']);
 
         $targetUser = User::where('email', $data['recipient'])->first();
 
         $currency = Currency::find($data['currency_id']);
-   
-        $transaction = $this->walletServ->sendTransaction(
-            $this->user, 
-            $targetUser, 
-            $currency, 
-            $data['amount'], 
-            isset($data['type'])
-        );
+
+        try {
+            $transaction = $this->walletServ->sendTransaction(
+                $this->user, 
+                $targetUser, 
+                $currency, 
+                $data['amount'], 
+                isset($data['type'])
+            );
+        } catch (UserException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 400);
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json([
+                'message' => 'An unexpected error occurred. Please try again later.',
+            ], 500);
+        }
 
         return response()->json([
             'message' => 'Transaction created successfully',
