@@ -53,7 +53,7 @@ class TransactionController
                 case TransactionTypeEnum::WITHDRAW:
                     $transaction = $this->walletServ->sendWithdraw(
                         $this->user, 
-                        -1 * abs($data['amount'])
+                        $data['amount']
                     );
                     break;
                 case TransactionTypeEnum::TRANSFER:
