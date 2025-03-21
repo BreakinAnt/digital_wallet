@@ -1,21 +1,28 @@
 <?php
-
 namespace App\Enums;
 
-enum TransactionTypeEnum: string
-{
+enum TransactionTypeEnum: string {
     case TRANSFER = 'transfer';
-    case DEPOSIT = 'deposit';
+    case DEPOSIT  = 'deposit';
     case WITHDRAW = 'withdraw';
 
-    static function toArray(): array
+    public static function toArray(): array
     {
         return [
-            'transfer' => 'Transfer',
-            'deposit' => 'Deposit',
-            'withdraw' => 'Withdraw',
+            'transfer',
+            'deposit',
+            'withdraw',
         ];
     }
 
+    public static function fromString(string $value): ?self
+    {
+        return match ($value) {
+            'transfer' => self::TRANSFER,
+            'deposit' => self::DEPOSIT,
+            'withdraw' => self::WITHDRAW,
+            default => null,
+        };
+    }
 
 }
