@@ -3,7 +3,7 @@
 ## 📌 Prerequisites
 
 This project uses:
-- **Laravel** 11.31  
+- **Laravel** 12
 - **PHP** 8.2  
 
 ## 📖 Documentation
@@ -30,7 +30,7 @@ The API request collection is available in the `documentations` folder.
     php artisan migrate
     php artisan db:seed
 ```
-5. Start the local server:
+5. __*__ Start the local server:
 ```
    php artisan serve
 ```
@@ -39,7 +39,9 @@ The API request collection is available in the `documentations` folder.
     php artisan test
 ```
 
-## 🐳 Running the Project via Laradock
+*__It's recommended to run this project using Laradock.__*
+
+## 🐳 Running the Project via Laradock (Recommended)
 1. In the terminal, navigate to the Laradock folder inside the project.
 ```
     cd Laradock
