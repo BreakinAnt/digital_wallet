@@ -44,15 +44,22 @@ The API request collection is available in the `documentations` folder.
 *__It's recommended to run this project using Laradock.__*
 
 ## 🐳 Running the Project via Laradock (Recommended)
-1. In the terminal, navigate to the Laradock folder inside the project.
+1. Inside the project root folder, run the following command:  
 ```
-    cd Laradock
+   git clone https://github.com/Laradock/laradock.git
 ```
-2. Run the following command:
+2. Navigate to the Laradock folder inside the project.
+```
+    cd laradock
+```
+3. Go inside your `Laradock` folder and rename `env.example` to `.env`.
+4. Open `.env` and search for `### PHP Version`.
+5. Change the `PHP_VERSION` variable to `8.2`.
+6. Run the following command:
 ```
     docker-compose up -d nginx mysql workspace redis
 ```
-3. By default, the database connection should be configured as follows:
+7. By default, the database connection should be configured as follows:
 ```ini
     DB_CONNECTION=mysql
     DB_HOST=mysql
