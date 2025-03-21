@@ -25,6 +25,12 @@ class UserTransaction extends Model
         'deleted_at',
     ];
 
+    protected $casts = [
+        'completed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'created_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
