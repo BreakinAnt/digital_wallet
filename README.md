@@ -57,7 +57,10 @@ php artisan key:generate
 ```
     cd laradock
 ```
-3. Go inside your `Laradock` folder and rename `env.example` to `.env`.
+3. Copy the .env.example file to `.env`:
+```
+   cp .env.example .env
+```
 4. Open `.env` and search for `### PHP Version`.
 5. Change the `PHP_VERSION` variable to `8.2`.
 6. Run the following command:
