@@ -6,6 +6,13 @@ This project uses:
 - **Laravel** 11.31  
 - **PHP** 8.2  
 
+## 📖 Documentation
+
+The API request collection is available in the `documentations` folder.  
+
+📌 [Postman Collection – Digital Wallet](https://github.com/BreakinAnt/digital_wallet/blob/main/documentations/Digital%20Wallet.postman_collection.json)  
+
+
 ## ⚙️ Running the Project
 
 1. Install Composer dependencies:  
