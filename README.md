@@ -59,7 +59,7 @@ The API request collection is available in the `documentations` folder.
 ```
     docker-compose up -d nginx mysql workspace redis
 ```
-7. By default, the database connection should be configured as follows:
+7. By default, the database connection should be configured as follows (Inside Laravel's .env):
 ```ini
     DB_CONNECTION=mysql
     DB_HOST=mysql
