@@ -90,7 +90,13 @@ class WalletService
 
         $transaction->update(['completed_at' => now()]);
 
-        $this->userWalletRep->update($wallet, -$transaction->amount);
+        if($transaction->total_amount > $wallet->balance) {
+            throw new UserException('Insufficient balance to complete the transaction');
+        }
+        
+        if(TransactionTypeEnum::fromString($transaction->type) === TransactionTypeEnum::TRANSFER) {
+            $this->userWalletRep->update($wallet, -$transaction->amount);
+        }
         $this->userWalletRep->update($targetWallet, $transaction->total_amount);
 
         return $transaction;
