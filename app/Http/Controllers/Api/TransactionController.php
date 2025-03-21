@@ -42,27 +42,27 @@ class TransactionController
     {
         $data = $request->only(['amount', 'currency_id', 'recipient', 'type']);
 
-        $targetUser = User::where('email', $data['recipient'])->first();
         try {
             switch(TransactionTypeEnum::fromString($data['type'])) {
                 case TransactionTypeEnum::DEPOSIT:
-                    // $transaction = $this->walletServ->sendDeposit(
-                    //     $this->user, 
-                    //     $data['amount']
-                    // );
-                    // break;
+                    $transaction = $this->walletServ->sendDeposit(
+                        $this->user, 
+                        $data['amount']
+                    );
+                    break;
                 case TransactionTypeEnum::WITHDRAW:
-                    // $transaction = $this->walletServ->sendWithdraw(
-                    //     $this->user, 
-                    //     $data['amount']
-                    // );
-                    // break;
+                    $transaction = $this->walletServ->sendWithdraw(
+                        $this->user, 
+                        -1 * abs($data['amount'])
+                    );
+                    break;
                 case TransactionTypeEnum::TRANSFER:
                     $transaction = $this->walletServ->sendTransfer(
                         $this->user, 
-                        $targetUser, 
+                        User::where('email', $data['recipient'])->first(), 
                         $data['amount']
                     );
+                    break;
             }
         } catch (UserException $e) {
             return response()->json([

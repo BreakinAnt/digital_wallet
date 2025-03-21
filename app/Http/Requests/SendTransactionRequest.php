@@ -15,7 +15,7 @@ class SendTransactionRequest extends FormRequest
         $types = implode(',', TransactionTypeEnum::toArray());
         return [
             'amount'            => ['required', 'integer'],
-            'recipient'         => ['required', 'email', 'exists:users,email'],
+            'recipient'         => ['required_if:type,transfer', 'email', 'exists:users,email'],
             'type'              => ['required', 'string', "in:$types"],
         ];
     }

@@ -56,6 +56,16 @@ class WalletService
        return $this->sendTransaction($user, $targetUser, $amount, TransactionTypeEnum::TRANSFER);
     }
 
+    public function sendDeposit(User $user, int $amount): UserTransaction
+    {
+        return $this->sendTransaction($user, $user, $amount, TransactionTypeEnum::DEPOSIT);
+    }
+
+    public function sendWithdraw(User $user, int $amount): UserTransaction
+    {
+        return $this->sendTransaction($user, $user, -1 * $amount, TransactionTypeEnum::WITHDRAW);
+    }
+
     private function sendTransaction(User $user, User $targetUser, int $amount, TransactionTypeEnum $type): UserTransaction
     {        
         $transaction = $this->userTransactionRep->create($user, $targetUser, $user->wallet->currency, $amount, $type);
@@ -67,17 +77,18 @@ class WalletService
 
     public function completeTransaction(UserTransaction $transaction): UserTransaction
     {
+        $wallet = $this->getWallet($transaction->user);
+        $targetWallet = $this->getWallet($transaction->targetUser);
+
         if($transaction->completed_at !== null) {
             throw new UserException('Transaction has already been completed');
         }
-
         if($transaction->cancelled_at !== null) {
             throw new UserException('Cannot complete a cancelled transaction');
+        } 
+        if($transaction->total_amount > $wallet->balance) {
+            throw new UserException('Insufficient balance to complete the transaction');
         }
-
-        $wallet = $this->getWallet($transaction->user);
-
-        $targetWallet = $this->getWallet($transaction->targetUser);
 
         try {
             $transaction = $this->exchangeRate($transaction->fresh());
@@ -87,12 +98,7 @@ class WalletService
         }
 
         $this->transactionStatusRep->create($transaction, TransactionStatusEnum::COMPLETED);
-
         $transaction->update(['completed_at' => now()]);
-
-        if($transaction->total_amount > $wallet->balance) {
-            throw new UserException('Insufficient balance to complete the transaction');
-        }
         
         if(TransactionTypeEnum::fromString($transaction->type) === TransactionTypeEnum::TRANSFER) {
             $this->userWalletRep->update($wallet, -$transaction->amount);
