@@ -23,20 +23,25 @@ The API request collection is available in the `documentations` folder.
 ```
    cp .env.example .env
 ```
-3. Configure the environment variables in the .env file, making sure to set up the database.
+4. Generate the application key:
+```
+php artisan key:generate
+```
+
+5. Configure the environment variables in the .env file, making sure to set up the database.
    
-4. Run the database migrations and seeders:
+6. Run the database migrations and seeders:
 <br>*Laradock will create a MySQL container. If you're not using Laradock, start the database using your preferred method.*
 ```
     php artisan migrate
     php artisan db:seed
 ```
 
-5. __*__ Start the local server:
+7. __*__ Start the local server:
 ```
    php artisan serve
 ```
-6. Run automated tests:
+8. Run automated tests:
 ```
     php artisan test
 ```
