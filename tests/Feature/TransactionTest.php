@@ -20,6 +20,7 @@ class TransactionTest extends TestCase
         $response = $this->actingAs($userA)->post('api/transaction', [
             'amount'    => 100,
             'recipient' => $userB->email,
+            'type'      => 'transfer',
         ]);
 
         $response->assertStatus(400);
@@ -32,6 +33,7 @@ class TransactionTest extends TestCase
         $response = $this->actingAs($user)->post('api/transaction', [
             'amount'    => 100,
             'recipient' => $user->email,
+            'type'      => 'transfer',
         ]);
 
         $response->assertStatus(400);
@@ -50,6 +52,7 @@ class TransactionTest extends TestCase
         $response = $this->actingAs($userA)->post('api/transaction', [
             'amount'    => 100,
             'recipient' => $userB->email,
+            'type'      => 'transfer',
         ]);
 
         $response->assertStatus(200);

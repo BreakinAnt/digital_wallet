@@ -43,9 +43,8 @@ class TransactionController
         $data = $request->only(['amount', 'currency_id', 'recipient', 'type']);
 
         $targetUser = User::where('email', $data['recipient'])->first();
-
         try {
-            switch($data['type']) {
+            switch(TransactionTypeEnum::fromString($data['type'])) {
                 case TransactionTypeEnum::DEPOSIT:
                     // $transaction = $this->walletServ->sendDeposit(
                     //     $this->user, 

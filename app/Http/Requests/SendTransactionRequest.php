@@ -16,7 +16,7 @@ class SendTransactionRequest extends FormRequest
         return [
             'amount'            => ['required', 'integer'],
             'recipient'         => ['required', 'email', 'exists:users,email'],
-            'type'              => ['optional', 'string', "in:$types"],
+            'type'              => ['required', 'string', "in:$types"],
         ];
     }
 }
