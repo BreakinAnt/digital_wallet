@@ -2,7 +2,7 @@
 
 This project is a personal code study developed using the **Laravel** framework, with the goal of practicing back-end architecture and applying modern coding principles. The focus has been on clean code, maintainability, and understanding how to structure scalable APIs.
 
-### 🧠 Key Concepts Explored
+### 🧠 Concepts Explored
 
 - **SOLID Principles**
   - Single Responsibility: separated services, repositories, and controllers
