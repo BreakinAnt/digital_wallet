@@ -1,3 +1,31 @@
+## 📚 Code Study Overview
+
+This project is a personal code study developed using the **Laravel** framework, with the goal of practicing back-end architecture and applying modern coding principles. The focus has been on clean code, maintainability, and understanding how to structure scalable APIs.
+
+### 🧠 Key Concepts Explored
+
+- **SOLID Principles**
+  - Single Responsibility: separated services, repositories, and controllers
+  - Dependency Inversion: designed for abstraction using interfaces
+  - Open/Closed: used enums and clean class extensions
+
+- **Design Patterns**
+  - Repository Pattern for clean data access
+  - Service Layer for encapsulating business logic
+  - Factory Pattern for model generation in testing
+  - Transformer Pattern via Laravel Resources
+
+- **Clean Architecture Practices**
+  - Validation through custom Form Requests
+  - Custom exceptions for clearer error handling
+  - Middleware for securing internal dev routes
+
+- **RESTful API Design**
+  - Token-based authentication using Laravel Sanctum
+  - Well-structured endpoints for user actions and transactions
+
+---
+
 # 🚀 Project Setup
 
 ## 📌 Prerequisites
